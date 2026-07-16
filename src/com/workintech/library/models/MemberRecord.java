@@ -2,7 +2,7 @@ package com.workintech.library.models;
 
 import java.time.LocalDate;
 
-public abstract class MemberRecord {
+public class MemberRecord {
     private long memberId;
     private LocalDate dateOfMembership;
     private int numOfBooksIssued;
@@ -47,7 +47,27 @@ public abstract class MemberRecord {
         this.maxBookLimit = maxBookLimit;
     }
 
+    public boolean hasLimit() {
+        return numOfBooksIssued < maxBookLimit;
+    }
+
     public void getMember() {
 
+    }
+
+    public void incBookIssued() {
+        if (hasLimit()) {
+            numOfBooksIssued++;
+        } else {
+            System.out.println("Kitap alma hakkınız doldu.");
+        }
+    }
+
+    public void decBookIssued() {
+        if (numOfBooksIssued > 0) {
+            numOfBooksIssued--;
+        } else {
+            System.out.println("İade edilecek kitap yok!");
+        }
     }
 }

@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Book {
-    private long id;
+    private final long id;
     private Author author;
     private String title;
     private Reader owner;
@@ -27,10 +27,6 @@ public class Book {
 
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public Author getAuthor() {

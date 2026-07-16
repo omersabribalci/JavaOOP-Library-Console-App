@@ -3,7 +3,7 @@ package com.workintech.library.models;
 import java.util.Objects;
 
 public abstract class Person {
-    private long id;
+    private final long id;
     private String name;
 
 
@@ -16,9 +16,6 @@ public abstract class Person {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

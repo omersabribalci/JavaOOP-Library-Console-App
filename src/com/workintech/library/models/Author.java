@@ -1,18 +1,16 @@
 package com.workintech.library.models;
 
-import java.util.List;
+import java.util.Map;
 
 public class Author extends Person{
 
-    private List<Book> books;
-
-    public Author(long id, String name, List<Book> books) {
+    public Author(long id, String name) {
         super(id, name);
-        this.books = books;
     }
 
     @Override
     public Person whoYouAre() {
         return this;
     }
+
 }

@@ -35,14 +35,14 @@ Proje sayımız ilerledikçe proje yönetimimizi kolaylaştırmak adına projele
 
 ### Sistemde Minimum Neler Yapılabilmelidir?
 Bütün sistemi bir konsol uygulaması olarak dizayn etmelisiniz.(Scanner sınıfı kullanılabilir)
-* Sisteme yeni kitap eklenebilir.
-* Sistemden id, isim veya yazar bilgisine göre bir kitap seçilebilir
-* Sistemde var olan bir kitabın bilgileri güncellenebilir.
-* Sistemde var olan bir kitap silinebilir.
-* Sistemde var olan bir kategorideki tüm kitaplar listelenebilir.
-* Sistemde var olan bir yazarın tüm kitapları listelenebilir
-* Bir kullanıcı sistemde eğer kitap kütüphanede varsa ve başkası tarafından alınmadıysa bir kitabı ödünç alabilir. Bu durum yaşanırsa hangi kitabın hangi kullanıcıda olduğunun bilgisi tutulmalıdır.
-* Aynı şekilde kullanıcı kitap geri teslimde edebilir.
-* Sistemden bir kitap alındığında kitabı alan kullanıcıya bir fatura kesilmelidir. Kitabı geri iade ettiğinde kullanıcıya ücreti geri iade edilmelidir.
-* Kullanıcıların 5 kitap limiti olmalı ve bu kitap limitine ulaştıklarında daha fazla kitap alamamalılar.  
+1. [x] Sisteme yeni kitap eklenebilir.(OK - in Library Class)
+2. [ ] Sistemden id, isim veya yazar bilgisine göre bir kitap seçilebilir.
+3. [ ] Sistemde var olan bir kitabın bilgileri güncellenebilir.
+4. [x] Sistemde var olan bir kitap silinebilir.(OK - in Library Class)
+5. [ ] Sistemde var olan bir kategorideki tüm kitaplar listelenebilir.
+6. [x] Sistemde var olan bir yazarın tüm kitapları listelenebilir. (OK - in Library Class)
+7. [ ] Bir kullanıcı sistemde eğer kitap kütüphanede varsa ve başkası tarafından alınmadıysa bir kitabı ödünç alabilir. Bu durum yaşanırsa hangi kitabın hangi kullanıcıda olduğunun bilgisi tutulmalıdır.
+8. [ ] Aynı şekilde kullanıcı kitap geri teslimde edebilir.
+9. [ ] Sistemden bir kitap alındığında kitabı alan kullanıcıya bir fatura kesilmelidir. Kitabı geri iade ettiğinde kullanıcıya ücreti geri iade edilmelidir.
+[ ] Kullanıcıların 5 kitap limiti olmalı ve bu kitap limitine ulaştıklarında daha fazla kitap alamamalılar.  
  
