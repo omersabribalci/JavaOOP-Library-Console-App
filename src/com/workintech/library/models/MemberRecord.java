@@ -51,8 +51,8 @@ public class MemberRecord {
         return numOfBooksIssued < maxBookLimit;
     }
 
-    public void getMember() {
-
+    public MemberRecord getMember() {
+        return this;
     }
 
     public void incBookIssued() {

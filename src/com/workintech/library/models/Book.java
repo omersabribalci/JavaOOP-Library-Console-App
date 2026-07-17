@@ -1,6 +1,5 @@
 package com.workintech.library.models;
 
-import java.net.http.HttpHeaders;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -13,16 +12,18 @@ public class Book {
     private BookStatus status;
     private String edition;
     private LocalDate dateOfPurchase;
+    private LocalDate checkoutDate;
 
-    public Book(long id, Author author, String title, Reader owner, double price, BookStatus status, String edition, LocalDate dateOfPurchase) {
+    public Book(long id, Author author, String title, double price, String edition, LocalDate dateOfPurchase) {
         this.id = id;
         this.author = author;
         this.title = title;
-        this.owner = owner;
+        this.owner = null;
         this.price = price;
-        this.status = status;
+        this.status = BookStatus.AVAILABLE;
         this.edition = edition;
         this.dateOfPurchase = dateOfPurchase;
+        this.checkoutDate = null;
     }
 
     public long getId() {
@@ -85,6 +86,14 @@ public class Book {
         this.dateOfPurchase = dateOfPurchase;
     }
 
+    public LocalDate getCheckoutDate() {
+        return checkoutDate;
+    }
+
+    public void setCheckoutDate(LocalDate checkoutDate) {
+        this.checkoutDate = checkoutDate;
+    }
+
     public void changeOwner(Reader newOwner) {
         this.owner = newOwner;
     }
@@ -96,6 +105,9 @@ public class Book {
     public void updateStatus(BookStatus newStatus) {
         this.status = newStatus;
     }
+
+
+
 
 
 

@@ -1,6 +1,5 @@
 package com.workintech.library.models;
 
-import java.util.Map;
 
 public class Author extends Person{
 

@@ -34,11 +34,6 @@ public abstract class Reader extends Person {
     }
 
     public void addBorrowedBook(Book book) {
-        if (!getMemberRecord().hasLimit()) {
-            System.out.println("Hata: Üyenin kitap alma limiti dolmuştur!");
-            return;
-        }
-
         books.add(book);
         getMemberRecord().incBookIssued();
     }
