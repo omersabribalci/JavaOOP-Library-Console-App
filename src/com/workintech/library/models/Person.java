@@ -25,7 +25,7 @@ public abstract class Person {
         this.name = name;
     }
 
-    public abstract Person whoYouAre();
+    public abstract String whoYouAre();
 
     @Override
     public String toString() {

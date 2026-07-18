@@ -7,12 +7,14 @@ public class MemberRecord {
     private LocalDate dateOfMembership;
     private int numOfBooksIssued;
     private int maxBookLimit;
+    private double unpaidFines;
 
     public MemberRecord(long memberId, LocalDate dateOfMembership, int numOfBooksIssued, int maxBookLimit) {
         this.memberId = memberId;
         this.dateOfMembership = dateOfMembership;
         this.numOfBooksIssued = numOfBooksIssued;
         this.maxBookLimit = maxBookLimit;
+        this.unpaidFines = 0.0;
     }
 
     public long getMemberId() {
@@ -47,27 +49,34 @@ public class MemberRecord {
         this.maxBookLimit = maxBookLimit;
     }
 
+    public double getUnpaidFines() {
+        return unpaidFines;
+    }
+
+    public void setUnpaidFines(double unpaidFines) {
+        this.unpaidFines = unpaidFines;
+    }
+
+    public void addFine(double amount) {
+        this.unpaidFines += amount;
+    }
+
+
     public boolean hasLimit() {
         return numOfBooksIssued < maxBookLimit;
     }
 
-    public MemberRecord getMember() {
-        return this;
-    }
 
     public void incBookIssued() {
         if (hasLimit()) {
             numOfBooksIssued++;
-        } else {
-            System.out.println("Kitap alma hakkınız doldu.");
         }
     }
+
 
     public void decBookIssued() {
         if (numOfBooksIssued > 0) {
             numOfBooksIssued--;
-        } else {
-            System.out.println("İade edilecek kitap yok!");
         }
     }
 }

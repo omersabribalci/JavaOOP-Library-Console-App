@@ -4,15 +4,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class InvoiceGenerator implements Biller {
-    private static InvoiceGenerator instance;
+    private static final InvoiceGenerator instance = new InvoiceGenerator();
 
     private InvoiceGenerator() {
     }
 
     public static InvoiceGenerator getInstance() {
-        if (instance == null) {
-            instance = new InvoiceGenerator();
-        }
         return instance;
     }
 

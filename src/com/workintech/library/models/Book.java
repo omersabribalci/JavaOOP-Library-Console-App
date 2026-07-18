@@ -19,7 +19,7 @@ public class Book {
         this.author = author;
         this.title = title;
         this.owner = null;
-        this.price = price;
+        setPrice(price);
         this.status = BookStatus.AVAILABLE;
         this.edition = edition;
         this.dateOfPurchase = dateOfPurchase;
@@ -59,8 +59,12 @@ public class Book {
     }
 
     public void setPrice(double price) {
+        if (price < 0) {
+            throw new IllegalArgumentException("Kitap fiyatı negatif olamaz!");
+        }
         this.price = price;
     }
+
 
     public BookStatus getStatus() {
         return status;
@@ -102,10 +106,9 @@ public class Book {
         return toString();
     }
 
-    public void updateStatus(BookStatus newStatus) {
-        this.status = newStatus;
+    public int getAllowedDays() {
+        return 30;
     }
-
 
 
 

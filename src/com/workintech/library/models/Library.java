@@ -1,10 +1,8 @@
 package com.workintech.library.models;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.workintech.library.exceptions.BookNotFoundException;
+
+import java.util.*;
 
 
 public class Library {
@@ -19,7 +17,7 @@ public class Library {
     }
 
     public Map<Long, Book> getBooks() {
-        return books;
+        return Collections.unmodifiableMap(books);
     }
 
     public void setBooks(Map<Long, Book> books) {
@@ -27,7 +25,7 @@ public class Library {
     }
 
     public Map<Long, Reader> getReaders() {
-        return readers;
+        return Collections.unmodifiableMap(readers);
     }
 
     public void setReaders(Map<Long, Reader> readers) {
@@ -43,8 +41,14 @@ public class Library {
     }
 
     public void addNewBook(Book newBook) {
+
+        if (newBook == null) {
+            throw new IllegalArgumentException("Kitap bilgisi boş (null) olamaz!");
+        }
+
+
         if (books.containsKey(newBook.getId())) {
-            System.out.println("Bu ID ile zaten bir kitap var! Hatalı işlem.");
+            throw new IllegalArgumentException("Bu ID ile zaten bir kitap var! Ekleme işlemi başarısız.");
         } else {
             books.put(newBook.getId(), newBook);
             System.out.println("Kitap kütüphaneye başarıyla eklendi!");
@@ -54,85 +58,55 @@ public class Library {
 
     public void deleteBook(Book book) {
         if (books.containsKey(book.getId())) {
-            books.remove(book.getId(), book);
+            books.remove(book.getId());
             System.out.println("Kitap kütüphaneden başarıyla silindi!");
         } else {
-            System.out.println("Bu ID ile bir kitap bulunamadı! Hatalı işlem.");
+            throw new BookNotFoundException("Bu ID ile bir kitap bulunamadı! Silme işlemi başarısız.");
         }
     }
 
     public void addNewReader(Reader newReader) {
         if (readers.containsKey(newReader.getId())) {
-            System.out.println("Hata: Bu ID ile zaten kayıtlı bir okuyucu var!");
+            throw new IllegalArgumentException("Bu ID ile zaten kayıtlı bir okuyucu var!");
         } else {
             readers.put(newReader.getId(), newReader);
             System.out.println("Kullanıcı başarıyla eklendi!");
-
         }
 
     }
 
+    // 1. ID'ye göre kitap arama..
+    public Book getBookById(long id) {
+        return librarian.searchBook(id, this.books);
+    }
+
+    // 2. İsme göre kitap arama..
+    public List<Book> getBooksByTitle(String title) {
+        return librarian.searchBook(title, this.books);
+    }
+
+    // 3. Yazara göre kitap arama..
     public List<Book> getBooksByAuthor(Author author) {
-
-        List<Book> result = new ArrayList<>();
-
-        for (Book book : books.values()) {
-            if (book.getAuthor().equals(author)) {
-                result.add(book);
-            }
-        }
-
-        return result;
+        return librarian.searchBook(author, this.books);
     }
+
 
     public void lendBook(Book book, Reader reader) {
-        if (!librarian.verifyMember(reader, this.readers)) {
-            System.out.println("Hata: Kullanıcı sistemde kayıtlı değil! Lütfen önce kayıt olunuz.");
-            return;
-        }
-
-        if (!books.containsKey(book.getId())) {
-            System.out.println("Hata: Kitap Bulunamadı!");
-            return;
-        }
-
-        if (book.getStatus() != BookStatus.AVAILABLE) {
-            System.out.println("Hata: Kitap müsait değil!");
-            return;
-        }
-
-        if (!reader.getMemberRecord().hasLimit()) {
-            System.out.println("Hata: Üyenin kitap alma limiti dolmuştur!");
-            return;
-        }
-
-        reader.addBorrowedBook(book); // kullanıcının kitap listesine ekleme ve hakkını güncelleme.
-        book.changeOwner(reader);    // kitabın ownerını değiştirme.
-        book.updateStatus(BookStatus.BORROWED); //update book status.
-        book.setCheckoutDate(LocalDate.now()); //ödünç verme tarihini güncelle.
-        InvoiceGenerator.getInstance().generateInvoice(reader, book); // fatura kesme.
-        // ilerde ödeme yapıldıktan sonra işlemler gerçekleşsin..
-
-        System.out.println("Ödünç işlemi başarılı.");
+        librarian.issueBook(book, reader, this);
     }
 
     public void takeBookBack(Book book, Reader reader) {
-        if (!reader.getBooks().contains(book)) {
-            System.out.println("Hata: Bu kitap bu kullanıcı üzerinde değil!");
-            return;
-        }
-
-        double fine = librarian.calculateFine(book);
-        if (fine > 0) {
-            System.out.println("Gecikme cezası tespit edildi. Tutar: " + fine + " TL");
-        }
-
-        reader.deleteBorrowedBook(book);
-        book.changeOwner(null);
-        book.updateStatus(BookStatus.AVAILABLE);
-        book.setCheckoutDate(null);
-
-        System.out.println("İade işlemi başarılı.");
+        librarian.returnBook(book, reader, this);
     }
+
+    public void updateBookInfo(long bookId, String newTitle, double newPrice, String newEdition) {
+        librarian.updateBook(bookId, newTitle, newPrice, newEdition, this.books);
+    }
+
+    public List<Book> getBooksByCategory(Class<?> category) {
+        return librarian.getBooksByCategory(category, this.books);
+    }
+
+
 
 }

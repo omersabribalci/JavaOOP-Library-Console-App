@@ -1,15 +1,17 @@
 package com.workintech.library.models;
 
-import java.util.List;
+import java.util.Collections;
+import java.util.Set;
+
 
 public abstract class Reader extends Person {
 
-    private List<Book> books;
+    private Set<Book> books;
     private MemberRecord memberRecord;
     private String address;
     private String phoneNo;
 
-    public Reader(long id, String name, List<Book> books, MemberRecord memberRecord, String address, String phoneNo) {
+    public Reader(long id, String name, Set<Book> books, MemberRecord memberRecord, String address, String phoneNo) {
         super(id, name);
         this.books = books;
         this.memberRecord = memberRecord;
@@ -17,9 +19,10 @@ public abstract class Reader extends Person {
         this.phoneNo = phoneNo;
     }
 
-    public List<Book> getBooks() {
-        return books;
+    public Set<Book> getBooks() {
+        return Collections.unmodifiableSet(books); // Dışarıdan sadece okunabilir, eleman eklenip silinemez!
     }
+
 
     public MemberRecord getMemberRecord() {
         return memberRecord;
@@ -43,8 +46,6 @@ public abstract class Reader extends Person {
         getMemberRecord().decBookIssued();
     }
 
-    @Override
-    public Person whoYouAre() {
-        return this;
-    }
+
+
 }

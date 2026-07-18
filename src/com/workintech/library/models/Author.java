@@ -8,8 +8,8 @@ public class Author extends Person{
     }
 
     @Override
-    public Person whoYouAre() {
-        return this;
+    public String whoYouAre() {
+        return "Yazar: " + getName();
     }
 
 }
