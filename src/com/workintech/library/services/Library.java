@@ -1,6 +1,9 @@
-package com.workintech.library.models;
+package com.workintech.library.services;
 
 import com.workintech.library.exceptions.BookNotFoundException;
+import com.workintech.library.models.Author;
+import com.workintech.library.models.Book;
+import com.workintech.library.models.Reader;
 
 import java.util.*;
 
@@ -46,12 +49,11 @@ public class Library {
             throw new IllegalArgumentException("Kitap bilgisi boş (null) olamaz!");
         }
 
-
         if (books.containsKey(newBook.getId())) {
             throw new IllegalArgumentException("Bu ID ile zaten bir kitap var! Ekleme işlemi başarısız.");
         } else {
             books.put(newBook.getId(), newBook);
-            System.out.println("Kitap kütüphaneye başarıyla eklendi!");
+            System.out.println(newBook.getTitle() + ", kütüphaneye başarıyla eklendi!");
         }
 
     }
@@ -59,7 +61,7 @@ public class Library {
     public void deleteBook(Book book) {
         if (books.containsKey(book.getId())) {
             books.remove(book.getId());
-            System.out.println("Kitap kütüphaneden başarıyla silindi!");
+            System.out.println(book.getTitle() + " adlı kitap kütüphaneden başarıyla silindi!");
         } else {
             throw new BookNotFoundException("Bu ID ile bir kitap bulunamadı! Silme işlemi başarısız.");
         }
@@ -70,7 +72,7 @@ public class Library {
             throw new IllegalArgumentException("Bu ID ile zaten kayıtlı bir okuyucu var!");
         } else {
             readers.put(newReader.getId(), newReader);
-            System.out.println("Kullanıcı başarıyla eklendi!");
+            System.out.println(newReader.getName() + " adlı kullanıcı başarıyla eklendi!");
         }
 
     }
@@ -85,9 +87,10 @@ public class Library {
         return librarian.searchBook(title, this.books);
     }
 
-    // 3. Yazara göre kitap arama..
-    public List<Book> getBooksByAuthor(Author author) {
-        return librarian.searchBook(author, this.books);
+
+    // 3. Yazar ismine göre kitap arama..
+    public List<Book> getBooksByAuthorName(String authorName) {
+        return librarian.searchBookByAuthorName(authorName, this.books);
     }
 
 
@@ -106,7 +109,5 @@ public class Library {
     public List<Book> getBooksByCategory(Class<?> category) {
         return librarian.getBooksByCategory(category, this.books);
     }
-
-
 
 }

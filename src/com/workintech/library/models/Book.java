@@ -13,6 +13,7 @@ public class Book {
     private String edition;
     private LocalDate dateOfPurchase;
     private LocalDate checkoutDate;
+    public static final int ALLOWED_DAYS = 30;
 
     public Book(long id, Author author, String title, double price, String edition, LocalDate dateOfPurchase) {
         this.id = id;
@@ -65,7 +66,6 @@ public class Book {
         this.price = price;
     }
 
-
     public BookStatus getStatus() {
         return status;
     }
@@ -107,10 +107,8 @@ public class Book {
     }
 
     public int getAllowedDays() {
-        return 30;
+        return ALLOWED_DAYS;
     }
-
-
 
 
 

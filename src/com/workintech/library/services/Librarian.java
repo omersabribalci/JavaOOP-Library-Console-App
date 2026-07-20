@@ -1,9 +1,10 @@
-package com.workintech.library.models;
+package com.workintech.library.services;
 
 import com.workintech.library.exceptions.BookLimitExceededException;
 import com.workintech.library.exceptions.BookNotAvailableException;
 import com.workintech.library.exceptions.BookNotFoundException;
 import com.workintech.library.exceptions.MemberNotRegisteredException;
+import com.workintech.library.models.*;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -24,45 +25,71 @@ public class Librarian extends Person {
         this.biller = biller;
     }
 
+
     @Override
     public String whoYouAre() {
         return "Görevli Kütüphaneci: " + getName();
     }
 
-    public List<Book> searchBook(String title, Map<Long, Book> books) {
-        if (title == null || title.trim().isEmpty()) return new ArrayList<>();
 
+    // title'a göre
+    public List<Book> searchBook(String title, Map<Long, Book> books) {
         List<Book> result = new ArrayList<>();
+
+        if (title == null || title.trim().isEmpty()) {
+            System.out.println("Sonuç yok!");
+            return result;
+        }
+
         for (Book book : books.values()) {
             if (book.getTitle() != null && book.getTitle().toLowerCase().contains(title.toLowerCase())) {
                 result.add(book);
             }
         }
+
+        if (result.isEmpty()) {
+            System.out.println("Sonuç yok!");
+        }
+
         return result;
     }
 
-
+    // idye göre
     public Book searchBook(long id, Map<Long, Book> books) {
-        return books.get(id);
+        Book book = books.get(id);
+        if (book == null) {
+            throw new BookNotFoundException("ID: " + id + " ile bir kitap bulunamadı!");
+        }
+        return book;
     }
 
-    public List<Book> searchBook(Author author, Map<Long, Book> books) {
+    // yazar ismine göre (string)
+    public List<Book> searchBookByAuthorName(String authorName, Map<Long, Book> books) {
         List<Book> result = new ArrayList<>();
+        if (authorName == null || authorName.trim().isEmpty()) {
+            System.out.println("Sonuç yok!");
+            return result;
+        }
+
         for (Book book : books.values()) {
-            if (Objects.equals(book.getAuthor(), author)) {
+            if (book.getAuthor() != null &&
+                    book.getAuthor().getName().toLowerCase().contains(authorName.toLowerCase())) {
                 result.add(book);
             }
         }
+
+        if (result.isEmpty()) {
+            System.out.println("Sonuç yok!");
+        }
+
         return result;
     }
-
 
     public void issueBook(Book book, Reader reader, Library library) {
 
         if (book == null) {
             throw new IllegalArgumentException("Kitap bilgisi boş (null) olamaz!");
         }
-
 
         if (!verifyMember(reader, library.getReaders())) {
             throw new MemberNotRegisteredException("Kullanıcı sistemde kayıtlı değil! Lütfen önce kayıt olunuz.");
@@ -96,7 +123,6 @@ public class Librarian extends Person {
             throw new IllegalArgumentException("Kitap bilgisi boş (null) olamaz!");
         }
 
-
         if (!reader.getBooks().contains(book)) {
             throw new BookNotFoundException("Bu kitap bu kullanıcı üzerinde değil, iade edilemez!");
         }
@@ -107,7 +133,8 @@ public class Librarian extends Person {
         if (fine > 0) {
             System.out.println("Gecikme cezası tespit edildi. Tutar: " + fine + " TL");
         }
-        if (refundAmount > 0) {
+
+        if (refundAmount >= 0) {
             System.out.println("Kullanıcıya iade edilecek tutar: " + refundAmount + " TL");
         } else {
             double ekOdeme = Math.abs(refundAmount);
@@ -130,7 +157,6 @@ public class Librarian extends Person {
     public void createBill(Reader reader, Book book) {
         this.biller.generateInvoice(reader, book);
     }
-
 
     public boolean verifyMember(Reader reader, Map<Long, Reader> readers) {
         if (reader == null) {
@@ -158,14 +184,18 @@ public class Librarian extends Person {
 
     public void updateBook(long bookId, String newTitle, double newPrice, String newEdition, Map<Long, Book> books) {
         Book bookToUpdate = searchBook(bookId, books);
-        if (bookToUpdate != null) {
+
+        if (newTitle != null && !newTitle.isEmpty()) {
             bookToUpdate.setTitle(newTitle);
-            bookToUpdate.setPrice(newPrice);
-            bookToUpdate.setEdition(newEdition);
-            System.out.println("Kitap bilgileri güncellendi!");
-        } else {
-            throw new BookNotFoundException("Güncellenecek kitap bulunamadı!");
         }
+        if (newPrice >= 0) {
+            bookToUpdate.setPrice(newPrice);
+        }
+        if (newEdition != null && !newEdition.isEmpty()) {
+            bookToUpdate.setEdition(newEdition);
+        }
+
+        System.out.println("Kitap bilgileri güncellendi!");
     }
 
     public List<Book> getBooksByCategory(Class<?> category, Map<Long, Book> books) {
@@ -178,6 +208,9 @@ public class Librarian extends Person {
         return result;
     }
 
+    public boolean verifyPassword(String input) {
+        return this.password.equals(input);
+    }
 
 }
 

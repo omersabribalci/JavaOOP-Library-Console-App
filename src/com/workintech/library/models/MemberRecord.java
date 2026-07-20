@@ -66,17 +66,19 @@ public class MemberRecord {
         return numOfBooksIssued < maxBookLimit;
     }
 
-
     public void incBookIssued() {
         if (hasLimit()) {
             numOfBooksIssued++;
         }
     }
 
-
     public void decBookIssued() {
         if (numOfBooksIssued > 0) {
             numOfBooksIssued--;
         }
+    }
+
+    public void payBill() {
+        System.out.println("Ödeme Başarılı!");
     }
 }

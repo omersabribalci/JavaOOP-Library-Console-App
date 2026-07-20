@@ -1,4 +1,7 @@
-package com.workintech.library.models;
+package com.workintech.library.services;
+
+import com.workintech.library.models.Book;
+import com.workintech.library.models.Reader;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
